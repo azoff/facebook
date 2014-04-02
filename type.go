@@ -9,6 +9,7 @@ package facebook
 
 import (
     "io"
+    "appengine"
 )
 
 // Holds facebook application information.
@@ -29,6 +30,7 @@ type Session struct {
     accessToken string // facebook access token. can be empty.
     app         *App
     id          string
+    context     appengine.Context
 }
 
 // Api HTTP method.
