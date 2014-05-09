@@ -1,6 +1,6 @@
 // A facebook graph api client in go.
 // https://github.com/huandu/facebook/
-// 
+//
 // Copyright 2012, Huan Du
 // Licensed under the MIT license
 // https://github.com/huandu/facebook/blob/master/LICENSE
@@ -109,27 +109,27 @@ package facebook
 // If app id, app secret or access token is required in graph api, caller should
 // create a new facebook session through App instance instead.
 func Api(path string, method Method, params Params) (Result, error) {
-    return defaultSession.Api(path, method, params)
+	return defaultSession.Api(path, method, params)
 }
 
 // Get is a short hand of Api(path, GET, params).
 func Get(path string, params Params) (Result, error) {
-    return Api(path, GET, params)
+	return Api(path, GET, params)
 }
 
 // Post is a short hand of Api(path, POST, params).
 func Post(path string, params Params) (Result, error) {
-    return Api(path, POST, params)
+	return Api(path, POST, params)
 }
 
 // Delete is a short hand of Api(path, DELETE, params).
 func Delete(path string, params Params) (Result, error) {
-    return Api(path, DELETE, params)
+	return Api(path, DELETE, params)
 }
 
 // Put is a short hand of Api(path, PUT, params).
 func Put(path string, params Params) (Result, error) {
-    return Api(path, PUT, params)
+	return Api(path, PUT, params)
 }
 
 // Makes a batch facebook graph api call.
@@ -139,7 +139,7 @@ func Put(path string, params Params) (Result, error) {
 //
 // See https://developers.facebook.com/docs/reference/api/batch/ to learn more about Batch Requests.
 func BatchApi(accessToken string, params ...Params) ([]Result, error) {
-    return Batch(Params{"access_token": accessToken}, params...)
+	return Batch(Params{"access_token": accessToken}, params...)
 }
 
 // Makes a batch facebook graph api call.
@@ -171,5 +171,5 @@ func BatchApi(accessToken string, params ...Params) ([]Result, error) {
 //
 // See https://developers.facebook.com/docs/reference/api/batch/ to learn more about Batch Requests.
 func Batch(batchParams Params, params ...Params) ([]Result, error) {
-    return defaultSession.Batch(batchParams, params...)
+	return defaultSession.Batch(batchParams, params...)
 }
