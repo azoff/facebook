@@ -254,6 +254,11 @@ func (session *Session) makeRequest(url string, params Params) ([]byte, error) {
 	}
 
 	client := urlfetch.Client(session.context)
+
+	//HACK: http://stackoverflow.com/questions/10523906/sslcertificateerror-the-handshake-operation-timed-out-when-trying-to-get-an
+	transport := client.Transport.(*urlfetch.Transport)
+	transport.AllowInvalidServerCertificate = true
+
 	response, err := client.Post(url, mime, buf)
 
 	if err != nil {
