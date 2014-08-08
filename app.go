@@ -14,6 +14,7 @@ import (
 	"crypto/sha256"
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
@@ -288,6 +289,49 @@ func (app *App) SessionFromSignedRequest(signedRequest string, context appengine
 
 	token, err = app.ParseSessionCode(token, &Session{context: context})
 
+	if err != nil {
+		return
+	}
+
+	session = &Session{
+		accessToken: token,
+		app:         app,
+		id:          id,
+		context:     context,
+	}
+	return
+}
+
+// Creates a session from a regular request.
+// If a request contains a code, it will automatically use this code
+// to exchange a valid access token.
+func (app *App) SessionFromRequest(req *http.Request) (session *Session, err error) {
+
+	values := req.URL.Query()
+	id := values.Get("user_id")
+	token := values.Get("oauth_token")
+	context := appengine.NewContext(req)
+
+	if token != "" {
+		session = &Session{
+			accessToken: token,
+			app:         app,
+			id:          id,
+			context:     context,
+		}
+		return
+	}
+
+	// cannot get "oauth_token"? try to get "code".
+	code := values.Get("code")
+	if code == "" {
+		// no code? no way to continue.
+		err = fmt.Errorf("cannot find 'oauth_token' and 'code'. no way to continue.")
+		return
+	}
+
+	// use a the same redirect URI as the current URL
+	token, err = app.ParseSessionCode(code, &Session{context: context})
 	if err != nil {
 		return
 	}
